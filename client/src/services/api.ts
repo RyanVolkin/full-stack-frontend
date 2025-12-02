@@ -46,6 +46,8 @@ export async function getCurrentUser() {
 }
 
 export async function getNotes() {
+  const token = getToken();
+  if (!token) return { unauthorized: true };
   return safeFetch(`${BASE}/notes`, {
     headers: { ...authHeaders(), "Content-Type": "application/json" },
   });
@@ -71,7 +73,6 @@ export async function updateNote(
 }
 
 export async function deleteNote(id: string) {
-  console.log("Deleting note with ID:", id);
   return safeFetch(`${BASE}/notes/${id}`, {
     method: "DELETE",
     headers: { ...authHeaders(), "Content-Type": "application/json" },
